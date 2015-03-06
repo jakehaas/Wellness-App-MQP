@@ -60,8 +60,8 @@ public class SleepFragment extends Fragment {
     private int calibratedWakeHour = 11;
 
     // Final Sleep Times
-    private String fallAsleepTime;
-    private String wakeUpTime;
+    private String fallAsleepTime = "";
+    private String wakeUpTime = "";
     private int sleepHour;
     private int sleepMin;
     private int sleepSec;
@@ -173,9 +173,10 @@ public class SleepFragment extends Fragment {
                 Utils.displayDialog(getActivity(), "More Sleep Session Info: During your previous session...",
                         "Calibrated Audio Level: " + Integer.toString(calibratedAmplitude)
                                 + "\nCalibrated Light Level: " + Float.toString(calibratedLight)
+                                + "\nLast Fell Asleep: " + fallAsleepTime
+                                + "\nLast Woke Up: " + wakeUpTime
                                 + "\nTotal Time Asleep: " + Integer.toString(durationHours) + ":" + Integer.toString(durationMins) + ":" + Integer.toString(durationSec)
-                                + "\nNumber of Wake Ups: " + Integer.toString(numWakeups)
-                                + "\nEfficiency: " + Integer.toString(getEfficiency()),
+                                + "\nNumber of Wake Ups: " + Integer.toString(numWakeups),
                         null, "OK", Utils.emptyRunnable(), null);
             }
         });
@@ -364,6 +365,14 @@ public class SleepFragment extends Fragment {
         if(hour == 0){
             hour = 12;
             amPm = "AM";
+        }
+
+        if(hour == 12 && amPm.equals("PM")){
+            return false;
+        }
+
+        if(hour == 12 && amPm.equals("AM")){
+            return true;
         }
 
         if ((hour >= calibratedSleepHour && amPm.equals("PM")) || (hour <= calibratedWakeHour && amPm.equals("AM"))) {
